@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">HomeworkThree</string>
+    <string name="character_btn">Character</string>
+    <string name="location_btn">Location</string>
+    <string name="episode_btn">Episode</string>
+
 </resources>
