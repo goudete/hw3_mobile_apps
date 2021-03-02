@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 
 public class MainActivity extends AppCompatActivity {
@@ -25,8 +26,26 @@ public class MainActivity extends AppCompatActivity {
         episode_btn = findViewById(R.id.episode_btn);
 
 
-//        loadFragment(new OneFragment(), R.id.fragContainer1);
-        loadFragment(new TwoFragment(), R.id.fragContainer1);
+        //on click listeners to load respective Fragments
+        character_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new CharacterFragment(), R.id.fragContainer);
+            }
+        });
+        location_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new LocationFragment(), R.id.fragContainer);
+            }
+        });
+        episode_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadFragment(new EpisodeFragment(), R.id.fragContainer);
+            }
+        });
+
     }
 
     public void loadFragment(Fragment fragment, int id){

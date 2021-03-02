@@ -12,7 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-public class OneFragment extends Fragment {
+public class EpisodeFragment extends Fragment {
+
     private EditText editText_name, editText_zip;
     private Button button;
 
