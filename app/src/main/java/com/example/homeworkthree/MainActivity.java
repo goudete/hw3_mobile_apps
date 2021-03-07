@@ -12,12 +12,14 @@ import android.widget.Button;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.SyncHttpClient;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class MainActivity extends AppCompatActivity {
@@ -26,6 +28,8 @@ public class MainActivity extends AppCompatActivity {
     Button location_btn;
     Button episode_btn;
     public static AsyncHttpClient client = new AsyncHttpClient();
+    public int totalCharacters;
+    public int characterId;
     public String getCharacterUrl;
     ArrayList<String> episodesArr = new ArrayList<String>();
 
@@ -33,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        getTotalCharacters();
 
         // Grabbing buttons
         character_btn = findViewById(R.id.character_btn);
@@ -44,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         character_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                requestCharacter();
+                getCharacter();
             }
         });
         location_btn.setOnClickListener(new View.OnClickListener() {
@@ -61,13 +67,41 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
+    public void getTotalCharacters() {
+        getCharacterUrl = "https://rickandmortyapi.com/api/character/";
 
-    public void requestCharacter() {
+        // Get total number of characters
+        client.addHeader("Accept", "application/json");
+        client.get(getCharacterUrl, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody) {
+                Log.d("api response", new String(responseBody));
+                try {
+                    JSONObject json = new JSONObject(new String(responseBody));
+
+                    JSONObject info = json.getJSONObject("info");
+                    totalCharacters = info.getInt("count");
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, cz.msebera.android.httpclient.Header[] headers, byte[] responseBody, Throwable error) {
+                Log.e("api error /character/id", new String(responseBody));
+
+            }
+        });
+    }
+    public void getCharacter() {
         getCharacterUrl = "https://rickandmortyapi.com/api/character/";
         Bundle bundle = new Bundle();
 
         // Generate url
-        getCharacterUrl += Integer.toString(ThreadLocalRandom.current().nextInt(1, 670 + 1));
+        Random random = new Random();
+        characterId = random.nextInt(totalCharacters - 1) + 1;
+
+        getCharacterUrl += Integer.toString(characterId);
         Log.d("characterURl", getCharacterUrl);
 
         //API Call
@@ -78,6 +112,7 @@ public class MainActivity extends AppCompatActivity {
                 Log.d("api response", new String(responseBody));
                 try {
                     JSONObject json = new JSONObject(new String(responseBody));
+                    // Clear previous elements stored in bundle
 
                     // Name, status, species, gender, origin name, location name, an image, and a list of episode numbers this character
                     bundle.putString("name", json.getString("name"));
@@ -102,6 +137,7 @@ public class MainActivity extends AppCompatActivity {
                         int id = Integer.parseInt(splitEp[splitEp.length - 1]);
                         episodesArr.add(Integer.toString(id));
                     }
+                    bundle.remove("episodesArr");
                     bundle.putStringArrayList("episodesArr", episodesArr);
 
                     // Load Fragment
@@ -122,5 +158,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }
