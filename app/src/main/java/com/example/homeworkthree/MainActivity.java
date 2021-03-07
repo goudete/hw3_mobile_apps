@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //getting total Characters from api
         getTotalCharacters();
 
         // Grabbing buttons
@@ -56,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         location_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                loadFragment(new LocationFragment(), R.id.fragContainer);
+                getLocations();
             }
         });
         episode_btn.setOnClickListener(new View.OnClickListener() {
@@ -157,6 +158,13 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
+    }
+    public void getLocations() {
+        // Load Fragment
+        getSupportFragmentManager().beginTransaction()
+                .setReorderingAllowed(true)
+                .replace(R.id.fragContainer, LocationFragment.class, null)
+                .commit();
     }
 
 

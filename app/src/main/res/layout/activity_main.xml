@@ -25,14 +25,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/episode_btn" />
+            android:text="@string/location_btn" />
 
         <Button
             android:id="@+id/episode_btn"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/location_btn" />
+            android:text="@string/episode_btn" />
     </LinearLayout>
 
     <androidx.fragment.app.FragmentContainerView
