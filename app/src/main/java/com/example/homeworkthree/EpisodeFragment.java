@@ -6,6 +6,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
+import java.util.ArrayList;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -13,22 +19,37 @@ import androidx.fragment.app.Fragment;
 
 public class EpisodeFragment extends Fragment {
 
+    public String name;
+    public String episode;
+    public String airDate;
+    ArrayList<String> charactersArr = new ArrayList<String>();
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_character, container, false);
-
-//        editText_name = v.findViewById(R.id.editText_name);
-//        editText_zip = v.findViewById(R.id.editText_zip);
-//        button = v.findViewById(R.id.button_submit);
-
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//            }
-//        });
-
-        return v;
+    public EpisodeFragment() {
+        super(R.layout.fragment_episode);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        // Grab views
+        TextView Name = getView().findViewById(R.id.episodeName);
+        TextView Episode = getView().findViewById(R.id.episodeNumber);
+        TextView AirDate = getView().findViewById(R.id.airedOn);
+        TextView CharactersArr = getView().findViewById(R.id.episodeCharacters);
+
+        // Get data from bundle
+        name = this.getArguments().getString("name");
+        episode = this.getArguments().getString("episode");
+        airDate = this.getArguments().getString("air_date");
+        charactersArr = this.getArguments().getStringArrayList("characters");
+
+        // Set text views
+        Name.setText("name: " + name);
+        Episode.setText("episode: " + episode);
+        AirDate.setText("air date: " + airDate);
+        CharactersArr.setText("character ids: " + charactersArr);
+
+
+    }
+
+
 }
